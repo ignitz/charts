@@ -134,6 +134,11 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          {{- if .Values.server.config.https.enabled }}
+            - name: https
+              containerPort: {{ .Values.server.config.https.port }}
+              protocol: TCP
+          {{- end }}
           {{- range $key, $value := .Values.coordinator.additionalExposedPorts }}
             - name: {{ $value.name }}
               containerPort: {{ $value.port }}
@@ -142,7 +147,8 @@ spec:
           livenessProbe:
             httpGet:
               path: /v1/info
-              port: http
+              port: {{ .Values.server.config.https.enabled | ternary "https" "http" }}
+              scheme: {{ .Values.server.config.https.enabled | ternary "HTTPS" "HTTP" }}
             initialDelaySeconds: {{ .Values.coordinator.livenessProbe.initialDelaySeconds | default 20 }}
             periodSeconds: {{ .Values.coordinator.livenessProbe.periodSeconds | default 10 }}
             timeoutSeconds: {{ .Values.coordinator.livenessProbe.timeoutSeconds | default 5 }}
@@ -151,7 +157,8 @@ spec:
           readinessProbe:
             httpGet:
               path: /v1/info
-              port: http
+              port: {{ .Values.server.config.https.enabled | ternary "https" "http" }}
+              scheme: {{ .Values.server.config.https.enabled | ternary "HTTPS" "HTTP" }}
             initialDelaySeconds: {{ .Values.coordinator.readinessProbe.initialDelaySeconds | default 20 }}
             periodSeconds: {{ .Values.coordinator.readinessProbe.periodSeconds | default 10 }}
             timeoutSeconds: {{ .Values.coordinator.readinessProbe.timeoutSeconds | default 5 }}

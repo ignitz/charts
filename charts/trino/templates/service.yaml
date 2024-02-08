@@ -8,12 +8,23 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  {{- if .Values.server.config.https.enabled }}
+  clusterIP: None
+  clusterIPs:
+  - None
+  {{- end }}
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: http
       protocol: TCP
       name: http
+    {{- if .Values.server.config.https.enabled }}
+    - port: {{ .Values.server.config.https.port }}
+      targetPort: https
+      protocol: TCP
+      name: https
+    {{- end }}
     {{- range $key, $value := .Values.coordinator.additionalExposedPorts }}
     - port: {{ $value.servicePort }}
       name: {{ $value.name }}

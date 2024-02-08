@@ -55,7 +55,6 @@ data:
 {{- if .Values.coordinator.config.memory.heapHeadroomPerNode }}
     memory.heap-headroom-per-node={{ .Values.coordinator.config.memory.heapHeadroomPerNode }}
 {{- end }}
-    discovery.uri=http://localhost:{{ .Values.service.port }}
 {{- if .Values.server.config.authenticationType }}
     http-server.authentication.type={{ .Values.server.config.authenticationType }}
 {{- end }}
@@ -65,7 +64,9 @@ data:
   {{- if .Values.server.config.https.enabled }}
     http-server.https.enabled=true
     http-server.https.port={{ .Values.server.config.https.port }}
-    http-server.https.keystore.path={{ .Values.server.config.https.keystore.path }}
+    discovery.uri=https://localhost:{{ .Values.server.config.https.port }}
+  {{- else }}
+    discovery.uri=http://localhost:{{ .Values.server.config.http.port }}
   {{- end }}
   {{ .Values.server.coordinatorExtraConfig | indent 4 }}
 
