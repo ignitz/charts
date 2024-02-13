@@ -65,7 +65,6 @@ data:
   {{- if .Values.server.config.https.enabled }}
     http-server.https.enabled=true
     http-server.https.port={{ .Values.server.config.https.port }}
-    http-server.https.keystore.path={{ .Values.server.config.https.keystore.path }}
   {{- end }}
   {{ .Values.server.coordinatorExtraConfig | indent 4 }}
 

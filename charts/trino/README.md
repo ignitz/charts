@@ -24,7 +24,6 @@ The following table lists the configurable parameters of the Trino chart and the
 | `server.config.http.port` |  | `8080` |
 | `server.config.https.enabled` |  | `false` |
 | `server.config.https.port` |  | `8443` |
-| `server.config.https.keystore.path` |  | `""` |
 | `server.config.authenticationType` |  | `""` |
 | `server.config.query.maxMemory` |  | `"4GB"` |
 | `server.exchangeManager.name` |  | `"filesystem"` |
